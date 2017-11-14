@@ -15,31 +15,16 @@
     },
     head () {
       return {
-        title: `About Page (${this.name}-side)`
+        title: `oauth`
       }
     },
     beforeMount () {
-      const wx = window.wx
       const url = window.location.href
-      
-      this.$store.dispatch('getWechatSignature', url)
+    
+      this.$store.dispatch('getWechatOAuth', url)
       .then(res => {
         if (res.data.success) {
-          const params = res.data.params
-          
-          wx.config({
-            debug: true,
-            appId: params.appId,
-            timestamp: params.timestamp,
-            nonceStr: params.noncestr,
-            signature: params.signature,
-            jsApiList: ['chooseImage']
-          })
-          
-          wx.ready( ()=> {
-            
-            console.log('success sign')
-          })
+          console.log(res)
         }
       })
     }

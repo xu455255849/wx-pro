@@ -61,8 +61,13 @@ export default async (ctx, next) => {
             ctx.body = menuMsg
         } else if (message.Content === 'bt' || message.Content === '3') {
             ctx.body = bt
+        } else if (message.Content === '2') {
+          const menu = require('./menu').default
+          await client.handle('delMenu')
+          const menuData = await client.handle('createMenu', menu)
+          console.log(menuData)
         }
-        
+  
     } else if (message.MsgType === 'image') {
         ctx.body = {
             type: 'image',
