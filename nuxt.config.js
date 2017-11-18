@@ -3,7 +3,7 @@ module.exports = {
     title: 'loading',
     meta: [
       { charset: 'utf-8' },
-      { hid: 'description', name: 'description', content: '冰与火之歌' }
+      { hid: 'description', name: 'description', content: '鲜流微信商店' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'static/favicon.ico' }
@@ -12,7 +12,7 @@ module.exports = {
       { src: 'https://res.wx.qq.com/open/js/jweixin-1.2.0.js' }
     ]
   },
-/*  css: [
+  css: [
     {
       src: 'static/sass/base.sass',
       lang: 'sass?indentedSyntax=true'
@@ -20,23 +20,13 @@ module.exports = {
     {
       src: 'swiper/dist/css/swiper.css'
     }
-  ],*/
-/*  plugins: [
+  ],
+ plugins: [
     { src: '~plugins/swiper.js', ssr: false },
     { src: '~plugins/flexible.js', ssr: false }
-  ],*/
+  ],
   build: {
-    // extend (config, ctx) {
-    //   if (ctx.isClient) {
-    //     config.module.rules.push({
-    //       enforce: 'pre',
-    //       test: /\.(js|vue)$/,
-    //       loader: 'eslint-loader',
-    //       exclude: /(node_modules)/
-    //     })
-    //   }
-    // },
-    loaders: [
+  loaders: [
       {
         test: /\.(png|jpe?g|gif|svg)$/,
         loader: 'url-loader',
@@ -47,7 +37,7 @@ module.exports = {
       }
     ]
   },
-  loading: { color: '#F44336' },
+  loading: { color: '#50f433' },
   performance: {
     prefetch: false
   }

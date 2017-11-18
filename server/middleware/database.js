@@ -3,7 +3,8 @@ import config from '../config/index'
 import fs from 'fs'
 import { resolve } from 'path'
 
-const models = resolve(__dirname, '../db/schema')
+const models = resolve(__dirname, '../database/schema')
+
 fs.readdirSync(models)
 .filter(file => ~file.search(/^[^\.].*\.js$/))
 .forEach(file => require(resolve(models, file)))

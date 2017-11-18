@@ -1,5 +1,5 @@
 import { controller, get, post, log } from '../decorator/router'
-//import * as wechat from '../controllers/wechat'
+import * as wechat from '../controllers/wechat'
 import config from '../config'
 import reply from '../wechat/reply'
 import wechatMiddle from '../wechat-lib/middleware'
