@@ -4,41 +4,6 @@ const baseUrl = ''
 
 class Services {
   /**
-   * 查询所有家族
-   * @return {Promise}
-   */
-  allHouses () {
-    return axios.get(`${baseUrl}/wiki/houses`)
-  }
-  
-  /**
-   * 查询主要人物
-   * @param {limit} name
-   * @return {Promise}
-   */
-  povCharacters (limit = 20) {
-    return axios.get(`${baseUrl}/wiki/characters?limit=${limit}`)
-  }
-  
-  /**
-   * 查询单个家族详情
-   * @param {String} _id
-   * @return {Promise}
-   */
-  focusHouse (id) {
-    return axios.get(`${baseUrl}/wiki/houses/${id}`)
-  }
-  
-  /**
-   * 查询单个人物详情
-   * @param {Number} id
-   * @return {Promise}
-   */
-  focusCharacter (id) {
-    return axios.get(`${baseUrl}/wiki/characters/${id}`)
-  }
-  
-  /**
    * 查询所有手办商品
    * @return {Promise}
    */

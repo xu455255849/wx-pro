@@ -23,10 +23,10 @@ export async function signature (ctx, next) {
 export async function redirect (ctx, next) {
   let redirect = config.SITE_ROOT_URL + '/oauth'
   let scope = 'snsapi_userinfo'
-  //const { a, b } = ctx.query
-  //const params = `${a}_${b}`
+  const { visit, id } = ctx.query
+  const params = id ? `${visit}_${id}` : visit
   
-  const url = wechat.getAuthorizeURL(scope, redirect)
+  const url = wechat.getAuthorizeURL(scope, redirect, params)
   
   ctx.redirect(url)
 }

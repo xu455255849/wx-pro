@@ -1,11 +1,5 @@
-import {
-  getAuthorizeURL,
-  getSignatureAsync,
-  getUserByCode
-} from './wechat'
+import * as wechat from './wechat'
 
-export {
-  getAuthorizeURL,
-  getSignatureAsync,
-  getUserByCode
+export default {
+  wechat: wechat
 }

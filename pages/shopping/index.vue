@@ -1,6 +1,15 @@
-<template >
-
-<div>ssss</div>
+<template lang="pug">
+    .container
+        .shopping
+            .shopping-title 水果商城
+            .shopping-list
+                .shopping-item(v-for='(item, index) in products' :key='index' @click='focusProduct(item)')
+                    img(:src="imageCDN + item.images[0]")
+                    .shopping-item-body
+                        .title {{ item.title }}
+                        .content {{ item.intro }}
+                        //- .footer
+                        //-   .material-icon mood
 </template>
 
 <script>
@@ -15,7 +24,9 @@
     },
     computed: {
       ...mapState([
+        'imageCDN',
         'products',
+        'shoppingScroll'
       ])
     },
     methods: {
@@ -25,7 +36,7 @@
       }
     },
     beforeCreate () {
-   //   this.$store.dispatch('fetchProducts')
+      this.$store.dispatch('fetchProducts')
     },
     mounted () {
       // 滚动条滚动至上次离开前的位置
