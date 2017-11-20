@@ -86,7 +86,7 @@
   import vSnackbar from '../../components/snackbar'
   
   export default {
-    middleware: 'auth',
+   // middleware: 'auth',
     layout: 'admin',
     head () {
       return {

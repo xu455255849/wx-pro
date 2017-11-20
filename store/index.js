@@ -11,8 +11,6 @@ const createStore = () => {
         'home': 0,
         'house': 0
       },
-      APICharacters: null,
-      IMDb: null,
       authUser: null,
       shoppingScroll: 0,
       

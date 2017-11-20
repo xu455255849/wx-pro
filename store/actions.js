@@ -1,5 +1,5 @@
-import axios from 'axios'
 import Services from './services'
+import axios from 'axios'
 
 export default {
   nuxtServerInit ({ commit }, { req }) {
@@ -15,11 +15,46 @@ export default {
     }
   },
   
-  getWechatSignature ({ commit }, url) {
+  async login ({ commit }, { email, password }) {
+    try {
+      let res = await axios.post('/admin/login', {
+        email,
+        password
+      })
+      
+      const { data } = res
+      
+      if (data.success) commit('SET_USER', data.data)
+      
+      return data
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('来错地方了')
+      }
+    }
+  },
+  
+  async logout ({ commit }) {
+    await axios.post('/admin/logout')
+    
+    commit('SET_USER', null)
+  },
+  
+  async createOrder ({ state }, obj) {
+    const { data } = Services.createOrder(obj)
+    
+    return data
+  },
+  
+  getWechatSignature({ commit }, url) {
     return Services.getWechatSignature(url)
   },
   
-  getWechatOAuth ({ commit }, url) {
+  getUserByOAuth({ commit }, url) {
+    return Services.getUserByOAuth(url)
+  },
+  
+  getWechatOAuth({ commit }, url) {
     return Services.getWechatOAuth(url)
   },
   
@@ -27,132 +62,60 @@ export default {
     commit('SET_AUTHUSER', authUser)
   },
   
-  async login ({ commit }, { email, password }) {
-    try {
-      let res = await axios.post('/api/login', {
-        email,
-        password
-      })
-      
-      let { data } = res
-      if (!data.ret) commit('SET_USER', data.user)
-      
-      return data
-    } catch (e) {
-      if (e.response.status === 401) {
-        throw new Error('You can\'t do it')
-      }
-    }
-  },
-  
-  async logout ({ commit }) {
-    await axios.post('/api/logout')
-    commit('SET_USER', null)
-  },
-  
-  async fetchHouses ({ state }) {
-    const res = await Services.allHouses()
-    state.houses = res.data
-    
-    return res
-  },
-  
-  async fetchCharacters ({ state }) {
-    const res = await Services.povCharacters(500)
-    
-    state.characters = res.data
-    return res
-  },
   
   async fetchProducts ({ state }) {
-    const res = await Services.allProducts()
+    const res = await Services.fetchProducts()
     
+    state.products = res.data.data
+    
+    return res
+  },
+  
+  async showProduct ({ state }, _id) {
+    if (_id === state.currentProduct._id) return
+    
+    const res = await Services.fetchProduct(_id)
     console.log(res.data)
-    state.products = res.data
-    return res
-  },
-  
-  async focusProduct ({ state }, _id) {
-    if (_id === state.focusProduct._id) return
-    const res = await Services.focusProduct(_id)
-    state.focusProduct = res.data
-    return res
-  },
-  
-  async fetchPayments ({ state }) {
-    let { data } = await Services.getPayments()
-    console.log(data)
-    state.payments = data
-    return data
-  },
-  
-  async focusHouse ({ state }, _id) {
-    if (_id === state.focusHouse._id) return
-    const res = await Services.focusHouse(_id)
-    state.focusHouse = res.data
-    return res
-  },
-  
-  async focusCharacter ({ state }, _id) {
-    if (_id === state.focusCharacter._id) return
-    const res = await Services.focusCharacter(_id)
-    state.focusCharacter = res.data
-    return res
-  },
-  
-  async updateCharacter ({ state, dispatch }, character) {
-    await axios.put(`/wiki/characters/${character._id}`, character)
-    await dispatch('fetchCharacters')
+    state.currentProduct = res.data.data
     
-    return ''
+    return res
   },
   
-  async updateHouse ({ state, dispatch }, house) {
-    await axios.put(`/wiki/houses/${house._id}`, house)
-    await dispatch('fetchHouses')
-    
-    return ''
-  },
   
   async saveProduct ({ state, dispatch }, product) {
     await axios.post('/api/products', product)
+    
     let res = await dispatch('fetchProducts')
     
-    return res.data
+    return res.data.data
   },
   
   async putProduct ({ state, dispatch }, product) {
     await axios.put('/api/products', product)
     let res = await dispatch('fetchProducts')
     
-    return res.data
+    return res.data.data
   },
   
-  async crawlerIMDbCharacters ({ state }) {
-    const { data } = await Services.crawlerIMDbcharacters()
-    state.IMDb = data
-    return data
+  async deleteProduct ({ state, dispatch }, product) {
+    await axios.delete(`/api/products/${product._id}`)
+    let res = await dispatch('fetchProducts')
+    
+    return res.data.data
   },
   
-  async APICharacters ({ state }) {
-    const { data } = await Services.APICharacters()
-    state.APICharacters = data
+  async fetchPayments ({ state }) {
+    let { data } = await Services.getPayments()
+    state.payments = data.data
     
     return data
   },
   
-  homePageScroll ({ state }, { home, house }) {
-    state.homePageScroll = {
-      home: home,
-      house: house
-    }
-  },
-  
-  shoppingScroll ({ state }, payload) {
-    state.shoppingScroll = payload
-  },
-  
-  finishExam ({ state }, obj) {
-    return Services.finishExam(obj)
+  async fetchUserAndOrders ({ state }) {
+    const res = await Services.fetchUserAndOrders()
+    
+    state.user = res.data.data
+    
+    return res
   }
 }
