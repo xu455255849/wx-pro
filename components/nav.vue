@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     data () {
       return {
@@ -21,12 +22,12 @@
           {
             'path': '/',
             'name': 'index',
-            'text': '冰火脸谱'
+            'text': '水果商城'
           },
           {
             'path': '/shopping',
             'name': 'shopping',
-            'text': '周边手办'
+            'text': '购物车'
           },
           {
             'path': '/user',
@@ -37,6 +38,9 @@
       }
     },
     computed: {
+      ...mapState([
+        'carCount'
+      ]),
       activeRoute () {
         return this.$route.name
       },

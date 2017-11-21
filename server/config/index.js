@@ -7,7 +7,8 @@ export default {
     token: 'xuyuuki'
   },
   "qiniu": {
-  
+    AK: 'y1xDGyi6nxedK---W3tz41n1thA2kjmH2uBjAza8',
+    SK: 'C-hp6P0lID0a4x1LnSFieiLQYVBYB0YUBMi0pV-A',
+    bucket: 'iceimg'
   }
-
 }

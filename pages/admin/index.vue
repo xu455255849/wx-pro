@@ -66,7 +66,7 @@
                                 .remove(@click='removeParameter(index)')
                                     .material-icon remove
             .edit-footer
-                button.btn.save(@click='saveEdited', v-if='!isProduct') 创建周边
+                button.btn.save(@click='saveEdited', v-if='!isProduct') 添加商品
                 button.btn.save(@click='saveEdited', v-if='isProduct') 保存修改
                 
                 .btn.add-parameter(@click='addParameter')
@@ -74,8 +74,6 @@
                     | 添加参数
         .float-btn(@click='createProduct')
             .material-icon add
-        v-snackbar(:open.sync='openSnackbar')
-            span(slot='body') 保存成功
 </template>
 
 <script>
@@ -83,10 +81,9 @@
   import axios from 'axios'
   import randomToken from 'random-token'
   import Uploader from 'qiniu-web-uploader'
-  import vSnackbar from '../../components/snackbar'
   
   export default {
-   // middleware: 'auth',
+    middleware: 'auth',
     layout: 'admin',
     head () {
       return {
@@ -96,7 +93,6 @@
     data () {
       return {
         isProduct: false,
-        openSnackbar: false,
         edited: {
           images: [],
           parameters: []
@@ -146,7 +142,6 @@
           ? await this.$store.dispatch('putProduct', this.edited)
           : await this.$store.dispatch('saveProduct', this.edited)
         
-        this.openSnackbar = true
         this.isProduct = false
         this.edited = {
           images: [],
@@ -185,7 +180,7 @@
           uptoken: token,
           key: Buffer.from(key).toString('base64')
         }
-        Uploader.QINIU_UPLOAD_URL = '//up-z2.qbox.me/'
+        Uploader.QINIU_UPLOAD_URL = '//up-z0.qiniu.com/'
         let uploader = new Uploader(file, uptoken)
         
         uploader.on('progress', () => {
@@ -199,9 +194,6 @@
         this.edited.images.push(res.key)
         // this.upload.dashoffset = 0
       }
-    },
-    components: {
-      vSnackbar
     }
   }
 </script>

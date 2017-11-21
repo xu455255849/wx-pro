@@ -1,39 +1,63 @@
-<template>
-  <div>
-      qweqweqweq
-  </div>
+<template lang="pug">
+    .container
+        .shopping
+            .shopping-title 水果商城
+            .shopping-list
+                .shopping-item(v-for='(item, index) in products' :key='index')
+                    img(:src="imageCDN + item.images[0]")
+                    .shopping-item-body
+                        .title {{ item.title }}
+                        .content {{ item.intro }}
+                            .footer
+                                span X {{ item.count }}
+                                img(src='~static/images/shopping.png' @click='focusProduct(item)')
 </template>
 
 <script>
- 
+  import { mapState } from 'vuex'
   
   export default {
-  //  middleware: 'wechat-auth',
+    // middleware: 'wechat-auth',
     head () {
       return {
-        // 本页面的<head>中的<title>
-        title: '冰火脸谱'
+        title: '水果商城'
       }
     },
-    data () {
-      return {
-      
-      }
+    computed: {
+      ...mapState([
+        'imageCDN',
+        'products',
+        'shoppingScroll'
+      ])
     },
     methods: {
-      focusHouse (item) {
-        // 路由跳转到house，附带查询参数id
-        this.$router.push({ path: '/house', query: { id: item._id } })
-      },
-      focusCharacters (item) {
-        // 路由跳转到character，附带查询参数id
-        this.$router.push({ path: '/character', query: { id: item._id } })
+      focusProduct (item) {
+        //this.$router.push({ path: '/deal', query: { id: item._id } })
+        item.count ++
+        
+        //this.$store.dispatch('addProduct', item)
       }
     },
-    
+    beforeCreate () {
+      this.$store.dispatch('fetchProducts')
+    },
+    mounted () {
+      // 滚动条滚动至上次离开前的位置
+      setTimeout(() => {
+        this.$el.scrollTop = this.shoppingScroll
+      }, 50)
+    },
+    beforeDestroy () {
+      // 离开前保存滚动条位置
+      this.$store.dispatch('shoppingScroll', this.$el.scrollTop)
+    }
   }
 </script>
-<!--
 
-<style scoped lang="sass" src='~static/sass/index.sass'></style>
--->
+<style lang="sass" src='../static/sass/shopping.sass'></style>
+
+<style>
+    .footer img {
+      animation: ;
+    }
+</style>

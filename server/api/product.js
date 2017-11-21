@@ -47,8 +47,8 @@ export async function del (product) {
   console.log('product')
   try {
     await product.remove()
-  } catch (e) {
-    e
+  } catch (err) {
+    console.log(err)
   }
   
   return true

@@ -1,6 +1,7 @@
 import * as wechat from './wechat'
-import * as product from './pr'
+import * as product from './product'
 
 export default {
-  wechat: wechat
+  wechat: wechat,
+  product: product
 }

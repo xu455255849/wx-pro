@@ -1,7 +1,6 @@
 <template lang="pug">
     header
-        .menu
-            span.material-icon menu
+        .menu 后台管理系统
 
 </template>
 

@@ -1,5 +1,5 @@
-import Services from './services'
 import axios from 'axios'
+import Services from './services'
 
 export default {
   nuxtServerInit ({ commit }, { req }) {
@@ -15,46 +15,11 @@ export default {
     }
   },
   
-  async login ({ commit }, { email, password }) {
-    try {
-      let res = await axios.post('/admin/login', {
-        email,
-        password
-      })
-      
-      const { data } = res
-      
-      if (data.success) commit('SET_USER', data.data)
-      
-      return data
-    } catch (e) {
-      if (e.response.status === 401) {
-        throw new Error('来错地方了')
-      }
-    }
-  },
-  
-  async logout ({ commit }) {
-    await axios.post('/admin/logout')
-    
-    commit('SET_USER', null)
-  },
-  
-  async createOrder ({ state }, obj) {
-    const { data } = Services.createOrder(obj)
-    
-    return data
-  },
-  
-  getWechatSignature({ commit }, url) {
+  getWechatSignature ({ commit }, url) {
     return Services.getWechatSignature(url)
   },
   
-  getUserByOAuth({ commit }, url) {
-    return Services.getUserByOAuth(url)
-  },
-  
-  getWechatOAuth({ commit }, url) {
+  getWechatOAuth ({ commit }, url) {
     return Services.getWechatOAuth(url)
   },
   
@@ -62,60 +27,85 @@ export default {
     commit('SET_AUTHUSER', authUser)
   },
   
+  async login ({ commit }, { email, password }) {
+    try {
+      let res = await axios.post('/api/login', {
+        email,
+        password
+      })
+      
+      let { data } = res
+      if (!data.ret) commit('SET_USER', data.user)
+      
+      return data
+    } catch (e) {
+      if (e.response.status === 401) {
+        throw new Error('You can\'t do it')
+      }
+    }
+  },
+  
+  async logout ({ commit }) {
+    await axios.post('/api/logout')
+    commit('SET_USER', null)
+  },
   
   async fetchProducts ({ state }) {
-    const res = await Services.fetchProducts()
-    
-    state.products = res.data.data
-    
-    return res
+    if (state.products.length !== 0) {
+      return
+    }
+    let data = []
+    const res = await Services.allProducts()
+    res.data.forEach( (it)=> {
+      it.count = 0
+      data.push(it)
+    })
+    state.products = data
+    return data
   },
   
-  async showProduct ({ state }, _id) {
-    if (_id === state.currentProduct._id) return
-    
-    const res = await Services.fetchProduct(_id)
-    console.log(res.data)
-    state.currentProduct = res.data.data
-    
-    return res
+  async addProduct ({ commit }, item) {
+    item.count = 1
+    commit('ADD_PRODUCT', item)
   },
   
+  async delProduct ({ commit }, index) {
+    commit('DEL_PRODUCT', index)
+  },
+  
+  async fetchPayments ({ state }) {
+    let { data } = await Services.getPayments()
+    console.log(data)
+    state.payments = data
+    return data
+  },
   
   async saveProduct ({ state, dispatch }, product) {
     await axios.post('/api/products', product)
-    
     let res = await dispatch('fetchProducts')
     
-    return res.data.data
+    return res.data
   },
   
   async putProduct ({ state, dispatch }, product) {
     await axios.put('/api/products', product)
     let res = await dispatch('fetchProducts')
     
-    return res.data.data
+    return res.data
   },
   
-  async deleteProduct ({ state, dispatch }, product) {
-    await axios.delete(`/api/products/${product._id}`)
-    let res = await dispatch('fetchProducts')
-    
-    return res.data.data
+  homePageScroll ({ state }, { home, house }) {
+    state.homePageScroll = {
+      home: home,
+      house: house
+    }
   },
   
-  async fetchPayments ({ state }) {
-    let { data } = await Services.getPayments()
-    state.payments = data.data
-    
-    return data
+  shoppingScroll ({ state }, payload) {
+    state.shoppingScroll = payload
   },
   
-  async fetchUserAndOrders ({ state }) {
-    const res = await Services.fetchUserAndOrders()
-    
-    state.user = res.data.data
-    
-    return res
+  finishExam ({ state }, obj) {
+    return Services.finishExam(obj)
   }
 }

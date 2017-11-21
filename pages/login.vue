@@ -38,16 +38,12 @@
                     input.form-control(type='password', v-model='user.password')
                     
                     button.btn.login-btn(@click='login') 登录
-        v-snackbar(:open.sync='openSnackbar')
-            span(slot='body') 请输入账号和密码
 </template>
 <script>
-  import vSnackbar from '../components/snackbar.vue'
   
   export default {
     data () {
       return {
-        openSnackbar: false,
         user: {}
       }
     },
@@ -57,7 +53,6 @@
         let { email, password } = this.user
         
         if (!email || !password) {
-          this.openSnackbar = true
           return ''
         }
         
@@ -66,10 +61,6 @@
         console.log(res)
         if (!res.ret) this.$router.push('/admin')
       }
-    },
-    
-    components: {
-      vSnackbar
     }
   }
 </script>

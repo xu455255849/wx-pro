@@ -4,7 +4,11 @@ import { resolve } from 'path'
 import R from 'ramda'
 
 const r = path => resolve(__dirname, path)
-const MIDDLEWARE = ['database', 'router']
+
+
+const MIDDLEWARES = ['database', 'common', 'router']
+
+
 const app = new Koa()
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
@@ -34,7 +38,7 @@ const start = async () => {
       process.exit(1)
     })
   }
-    await useMiddleware(app)(MIDDLEWARE)
+    await useMiddleware(app)(MIDDLEWARES)
 
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset
@@ -42,6 +46,7 @@ const start = async () => {
     return new Promise((resolve, reject) => {
       ctx.res.on('close', resolve)
       ctx.res.on('finish', resolve)
+      ctx.req.session = ctx.session
       nuxt.render(ctx.req, ctx.res, promise => {
         // nuxt.render passes a rejected promise into callback on error.
         promise.then(resolve).catch(reject)
