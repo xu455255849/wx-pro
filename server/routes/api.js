@@ -91,6 +91,48 @@ export class DatabaseController {
     }
   }
   
+  @get('charge/:openid')
+  @log
+  async getProduct (ctx, next) {
+    const { openid } = ctx.params
+    console.log(openid)
+    if (!openid) return (ctx.body = 'openid is required')
+    
+    let user = await User
+    .findOne({
+      openid: openid
+    })
+    .exec()
+    
+    ctx.body = user
+  }
+  
+  @put('charge')
+  async putCharge (ctx, next) {
+    let body = ctx.request.body
+    const { openid } = body
+    
+    let user = await User
+    .findOne({
+      openid: openid
+    })
+    .exec()
+    
+    if (!user) {
+      return (ctx.body = 'user not exist')
+    }
+  
+    user.money = xss(body.value)
+    
+    try {
+      await user.save()
+      ctx.body = user
+      
+    } catch (e) {
+      ctx.throw(501, e)
+    }
+  }
+  
   @put('products')
   async putProducts (ctx, next) {
     let body = ctx.request.body

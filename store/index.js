@@ -13,6 +13,7 @@ const createStore = () => {
       },
       authUser: null,
       user: null,
+      money: 0,
       shoppingScroll: 0,
       products: [],
       focusProduct: {},

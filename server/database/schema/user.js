@@ -10,8 +10,9 @@ const Mixed = Schema.Types.Mixed
 
 
 const UserSchema = new Schema({
-  openid: [String],
-  avatarUrl: String,
+  money: Number,
+  openid: String,
+  headimgurl: String,
   nickname: String,
   phoneNumber: String,
   address: String,

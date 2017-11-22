@@ -3,6 +3,11 @@ import axios from 'axios'
 const baseUrl = ''
 
 class Services {
+  
+  getCharge (openid) {
+    return axios.get(`${baseUrl}/api/charge/${openid}`)
+  }
+  
   /**
    * 查询所有手办商品
    * @return {Promise}

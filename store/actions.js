@@ -87,6 +87,26 @@ export default {
     return res.data
   },
   
+  async getCharge ({ state }) {
+    const openid = state.authUser.openid
+    let { data } = await Services.getCharge(openid)
+    //console.log('getchar', data)
+    
+    state.money = data.money
+   
+    return data
+  },
+  
+  async putCharge ({ state }) {
+    await axios.put('/api/charge', {
+      openid: state.authUser.openid,
+      value: 500
+    })
+    //let res = await dispatch('getCharge')
+    
+    //return res.data
+  },
+  
   async putProduct ({ state, dispatch }, product) {
     await axios.put('/api/products', product)
     let res = await dispatch('fetchProducts')
