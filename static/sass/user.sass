@@ -1,6 +1,6 @@
-@import '~static/sass/mixin'
-@import '~static/sass/color'
-@import '~static/sass/var'
+@import './mixin'
+@import './color'
+@import './var'
 
 .container
   +border-box
@@ -8,7 +8,7 @@
 
   .user-header
     padding: $spacing*2 0
-    font-size: 2.5em
+    +font-dpr(24px)
     text-align: center
 
     background: #51f4f2
@@ -22,20 +22,21 @@
     line-height: 1.5rem
     padding-top: 0.5rem
     span
-      font-size: 1.5em
+      +font-dpr(18px)
       color: #1E88E5
     img
       vertical-align: middle
       margin: 0 1rem
     button
-      font-size: 0.5rem
-      margin-left: 3rem
+      +font-dpr(18px)
+      float: right
+      margin-right: 1rem
+      border: none
+      margin-top: 0.3rem
       padding: 0.2rem 0.5rem
       background: #1E88E5
       border-radius: 20px
       color: #fff
-
-
 
 
 .user
@@ -50,6 +51,18 @@
 
     .user-content
       font-size: 1.8em
+
+  .user-button
+    text-align: center
+    padding: 0.2rem 0.5rem
+    border-radius: 10px
+    background: #1E88E5
+    border: none
+    +font-dpr(14px)
+    width: 3rem
+    color: #fff
+    margin: 1rem auto
+
   
   .user-order
     .user-order-item

@@ -36,10 +36,13 @@ export async function getUserByCode (code) {
   
   if (!existUser) {
     let newUser = new User({
-      openid: [data.openid],
+      openid: data.openid,
       unionid: data.unionid,
       nickname: user.nickname,
-      money: 0
+      money: 0,
+      address: '尚未填写收获地址',
+      phoneNumber: '尚未填写手机号',
+      name: '尚未填写真实姓名'
     })
     await newUser.save()
   }

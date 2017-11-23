@@ -91,7 +91,7 @@ export class DatabaseController {
     }
   }
   
-  @get('charge/:openid')
+  @get('user/:openid')
   @log
   async getProduct (ctx, next) {
     const { openid } = ctx.params
@@ -107,22 +107,19 @@ export class DatabaseController {
     ctx.body = user
   }
   
-  @put('charge')
+  @put('user/address')
   async putCharge (ctx, next) {
     let body = ctx.request.body
     const { openid } = body
-    
     let user = await User
     .findOne({
       openid: openid
     })
     .exec()
-    
     if (!user) {
       return (ctx.body = 'user not exist')
     }
-  
-    user.money = xss(body.value)
+    user.address = xss(body.address)
     
     try {
       await user.save()

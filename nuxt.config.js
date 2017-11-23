@@ -19,11 +19,15 @@ module.exports = {
     },
     {
       src: 'swiper/dist/css/swiper.css'
+    },
+    {
+      src: 'vue-js-modal/dist/ssr.index'
     }
   ],
  plugins: [
-    { src: '~plugins/swiper.js', ssr: false },
-    { src: '~plugins/flexible.js', ssr: false }
+   { src: '~plugins/swiper.js', ssr: false },
+   { src: '~plugins/flexible.js', ssr: false },
+   { src: '~plugins/vue-js-modal', ssr: false }
   ],
   build: {
   loaders: [

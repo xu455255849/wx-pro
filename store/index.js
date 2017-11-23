@@ -15,7 +15,7 @@ const createStore = () => {
       user: {
         email: ''
       },
-      money: 0,
+      userData: {},
       shoppingScroll: 0,
       products: [],
       focusProduct: {},

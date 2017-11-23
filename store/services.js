@@ -4,8 +4,8 @@ const baseUrl = ''
 
 class Services {
   
-  getCharge (openid) {
-    return axios.get(`${baseUrl}/api/charge/${openid}`)
+  getUserData (openid) {
+    return axios.get(`${baseUrl}/api/user/${openid}`)
   }
   
   /**

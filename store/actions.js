@@ -64,15 +64,6 @@ export default {
     return data
   },
   
-  async addProduct ({ commit }, item) {
-    item.count = 1
-    commit('ADD_PRODUCT', item)
-  },
-  
-  async delProduct ({ commit }, index) {
-    commit('DEL_PRODUCT', index)
-  },
-  
   async fetchPayments ({ state }) {
     let { data } = await Services.getPayments()
     console.log(data)
@@ -87,21 +78,35 @@ export default {
     return res.data
   },
   
-  async getCharge ({ state }) {
+  async getUserData ({ state }) {
     const openid = state.authUser.openid
-    let { data } = await Services.getCharge(openid)
+    let { data } = await Services.getUserData(openid)
     //console.log('getchar', data)
     
-    state.money = data.money
+    state.userData = data
    
     return data
   },
   
-  async putCharge ({ state }) {
-    await axios.put('/api/charge', {
-      openid: state.authUser.openid,
-      value: 500
-    })
+  async editUserData ({ state }, type, value){
+    switch (type) {
+      case 'address':
+        await axios.put('/user/address', {
+          openid: state.authUser.openid,
+          value: 500
+        })
+      case '':
+        await axios.put('/api/user', {
+          openid: state.authUser.openid,
+          value: 500
+        })
+      case '':
+        await axios.put('/api/user', {
+          openid: state.authUser.openid,
+          value: 500
+        })
+    }
+   
     //let res = await dispatch('getCharge')
     
     //return res.data

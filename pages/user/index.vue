@@ -5,33 +5,39 @@
             .user-header-text {{ authUser.nickname }}
         .user-money
             img(src='~static/images/money.png' )
-            span {{ money.toFixed(2) }}
+            span {{ userData.money.toFixed(2) }}
             button(@click="charge") 充值
         .user
             .user-address
-                cell(title='收获地址' iconName='place' @click.native='address')
-                .user-content {{ authUser.nickname }}
+                cell(title='收获地址' iconName='place')
+                .user-content {{ userData.address }}
             .user-phone
                 cell(title='电话' iconName='phone_iphone')
-                .user-content {{ authUser.phoneNumber }}
+                .user-content {{ userData.phoneNumber }}
             .user-name
                 cell(title='姓名' iconName='account_box')
-                .user-content {{ authUser.name }}
-            .user-order
-                cell(title='我的订单' iconName='list')
-                .user-order-item(v-for='(item, index) in payments' :key='index')
-                    img(:src='imageCDN + item.product.images[0]')
-                    .user-order-intro
-                        .title {{ item.product.title }}
-                        .content {{ item.product.intro }}
-                    .user-order-price
-                        span ¥{{ item.product.price.toFixed(2) }}
+                .user-content {{ userData.name }}
+            .user-button
+                div(@click="showModal") 编辑收货信息
+        modal(name="info" height="auto" width="80%" resizable="true")
+            .edit-title 修改收货信息
+            .edit-content
+                cell(title='收获地址' iconName='place')
+                input(v-model='info.address')
+            .edit-content
+                cell(title='电话' iconName='phone_iphone')
+                input(v-model='info.phoneNumber')
+            .edit-content
+                cell(title='姓名' iconName='account_box')
+                input(v-model='info.name')
+            .edit-button
+                button(@click="charge") 确定
 </template>
 
 <script>
   import cell from '../../components/cell.vue'
   import { mapState } from 'vuex'
-  
+
   export default {
     middleware: 'wechat-auth',
     head () {
@@ -39,63 +45,45 @@
         title: '个人中心'
       }
     },
+    data () {
+      return {
+        showInfo: false,
+        info: {
+          name: '',
+          phoneNumber: '',
+          address: ''
+        },
+      }
+    },
     computed: {
       ...mapState([
         'authUser',
         'imageCDN',
         'payments',
-        'money'
+        'userData'
       ])
     },
     methods: {
-      charge () {
-        this.$store.dispatch('putCharge')
+      showModal () {
+        this.info.name = this.userData.name
+        this.info.phoneNumber = this.userData.phoneNumber
+        this.info.address = this.userData.address
+        console.log(this.info)
+        this.$modal.show('info')
       },
-      address () {
-        wx.openAddress({
-          trigger: function (res) {
-            alert('用户开始拉出地址');
-          },
-          success: function (res) {
-            alert('用户成功拉出地址');
-            alert(JSON.stringify(res));
-          },
-          cancel: function (res) {
-            alert('用户取消拉出地址');
-          },
-          fail: function (res) {
-            alert(JSON.stringify(res));
-          }
-        });
+      charge () {
+        this.$store.dispatch('editUserData', type, value)
       }
     },
     beforeCreate () {
-      this.$store.dispatch('getCharge')
+      this.$store.dispatch('getUserData')
       //this.$store.dispatch('fetchPayments')
     },
     components: {
       cell
     },
     mounted () {
-      const wx = window.wx
-      const url = window.location.href
-  
-      this.$store.dispatch('getWechatSignature', url).then(res => {
-        if (res.data.success === 1) {
-          const params = res.data.params
-          wx.config({
-            debug: true, // 调试模式
-            appId: params.appId, // 公众号的唯一标识
-            timestamp: params.timestamp, // 生成签名的时间戳
-            nonceStr: params.noncestr, // 生成签名的随机串
-            signature: params.signature, // 签名
-            jsApiList: [ 'openAddress' ]// 需要使用的JS接口列表: 微信支付接口
-          })
-          wx.ready(() => {
-         
-          })
-        }
-      })
+    
     }
   }
 </script>

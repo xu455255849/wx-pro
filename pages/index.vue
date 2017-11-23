@@ -17,7 +17,7 @@
   import { mapState } from 'vuex'
   
   export default {
-    // middleware: 'wechat-auth',
+    middleware: 'wechat-auth',
     head () {
       return {
         title: '水果商城'
@@ -34,8 +34,6 @@
       focusProduct (item) {
         //this.$router.push({ path: '/deal', query: { id: item._id } })
         item.count ++
-        
-        //this.$store.dispatch('addProduct', item)
       }
     },
     beforeCreate () {
@@ -55,9 +53,3 @@
 </script>
 
 <style lang="sass" src='../static/sass/shopping.sass'></style>
-
-<style>
-    .footer img {
-      animation: ;
-    }
-</style>
