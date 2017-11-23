@@ -10,28 +10,26 @@
         .user
             .user-address
                 cell(title='收获地址' iconName='place')
-                .user-content {{ userData.address }}
+                .user-content(v-if='editType') {{ userData.address }}
+                .user-input(v-else)
+                    input(v-model='info.address')
             .user-phone
                 cell(title='电话' iconName='phone_iphone')
-                .user-content {{ userData.phoneNumber }}
+                .user-content(v-if='editType') {{ userData.phoneNumber }}
+                .user-input(v-else)
+                    input(v-model='info.phoneNumber')
             .user-name
                 cell(title='姓名' iconName='account_box')
-                .user-content {{ userData.name }}
-            .user-button
-                div(@click="showModal") 编辑收货信息
-        modal(name="info" height="auto" width="80%" resizable="true")
-            .edit-title 修改收货信息
-            .edit-content
-                cell(title='收获地址' iconName='place')
-                input(v-model='info.address')
-            .edit-content
-                cell(title='电话' iconName='phone_iphone')
-                input(v-model='info.phoneNumber')
-            .edit-content
-                cell(title='姓名' iconName='account_box')
-                input(v-model='info.name')
-            .edit-button
-                button(@click="charge") 确定
+                .user-content(v-if='editType') {{ userData.name }}
+                .user-input(v-else)
+                    input(v-model='info.name')
+            .user-button(v-if='editType')
+                div(@click="editChange") 编辑收货信息
+            .user-button(v-else)
+                div(@click="editChange") 取消
+                div(@click="saveChange") 保存收货信息
+                
+      
 </template>
 
 <script>
@@ -47,7 +45,7 @@
     },
     data () {
       return {
-        showInfo: false,
+        editType: true,
         info: {
           name: '',
           phoneNumber: '',
@@ -64,12 +62,17 @@
       ])
     },
     methods: {
-      showModal () {
+      editChange () {
         this.info.name = this.userData.name
         this.info.phoneNumber = this.userData.phoneNumber
         this.info.address = this.userData.address
         console.log(this.info)
-        this.$modal.show('info')
+  
+        this.editType = !this.editType
+        //this.$modal.show('info')
+      },
+      saveChange () {
+        console.log('save')
       },
       charge () {
         this.$store.dispatch('editUserData', type, value)

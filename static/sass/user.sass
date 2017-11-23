@@ -51,19 +51,31 @@
 
     .user-content
       font-size: 1.8em
-
+    .user-input
+      input
+        margin: 20px 0
+        width: 80%
+        padding: 0.2rem 0.5rem
+        color: #2e2f30
+        +font-dpr(14px)
+        border: 2px solid #d8d8d8
+        border-radius: 6px
+      input:focus
+        outline: #51f4f2 solid thick;
   .user-button
     text-align: center
-    padding: 0.2rem 0.5rem
-    border-radius: 10px
-    background: #1E88E5
-    border: none
-    +font-dpr(14px)
-    width: 3rem
-    color: #fff
-    margin: 1rem auto
+    margin: 50px auto
+    div
+        margin-right: 50px
+        display: inline-block
+        padding: 0.2rem 0
+        border-radius: 10px
+        background: #1E88E5
+        border: none
+        +font-dpr(14px)
+        width: 3rem
+        color: #fff
 
-  
   .user-order
     .user-order-item
       width: 100%
