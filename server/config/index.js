@@ -6,7 +6,7 @@ export default {
     appSecret: '51e316b65d65592d41648746ff552ec0',
     token: 'xuyuuki'
   },
-  "qiniu": {
+  qiniu: {
     AK: 'y1xDGyi6nxedK---W3tz41n1thA2kjmH2uBjAza8',
     SK: 'C-hp6P0lID0a4x1LnSFieiLQYVBYB0YUBMi0pV-A',
     bucket: 'iceimg'

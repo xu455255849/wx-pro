@@ -20,6 +20,7 @@ export async function signature (ctx, next) {
 // 网页上点某按钮，直接跳转到 http://x.o/wechat-redirect?visit=a&id=b
 // 用户被重定向到 Wechat Redirect URL 授权验证
 // 验证后，自动二跳进入 http://x.o/oauth?code=xxxxxx&state=a_b
+//  let scope = 'snsapi_base'
 export async function redirect (ctx, next) {
   let redirect = config.SITE_ROOT_URL + '/oauth'
   let scope = 'snsapi_userinfo'

@@ -10,7 +10,7 @@
                         .content {{ item.intro }}
                          .footer
                              span X {{ item.count }}
-                             img(src='~static/images/clear.png' @click='delProduct(index)')
+                             img(src='~static/images/clear.png' @click='delProduct(item, index)')
             .shopping-list(v-else)
                 .noproduct
                     img(src='~static/images/cry.png')
@@ -41,10 +41,13 @@
       ])
     },
     methods: {
-      delProduct (index) {
+      delProduct (item, index) {
+        item.count --
+        if (item.count == 0) {
+          this.list.splice(index, 1)
+        }
         // 路由跳转到deal，附带查询参数id
         //this.$router.push({ path: '/deal', query: { id: item._id } })
-        this.$store.dispatch('delProduct', index)
       }
     },
     mounted () {

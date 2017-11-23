@@ -12,7 +12,9 @@ const createStore = () => {
         'house': 0
       },
       authUser: null,
-      user: null,
+      user: {
+        email: ''
+      },
       money: 0,
       shoppingScroll: 0,
       products: [],
